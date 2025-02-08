@@ -1,0 +1,146 @@
+<html lang="en"><head><meta charset="utf-8"/><meta http-equiv="X-UA-Compatible" content="IE=edge"/><meta name="viewport" content="width=device-width, initial-scale=1"/><meta name="description" content=""/><meta name="keyword"/><title>時間複雜度
+-
+競程學習區
+-
+
+</title><link rel="icon" href="/img/favicon.ico"/>
+<link rel="stylesheet" href="/cp/css/style.css">
+
+<link rel="stylesheet" href="/cp/css/helpers.css">
+
+<script src="/cp/js/clipboard/clipboard.min.js"></script>
+
+
+<script src="/cp/js/bootstrap.js"></script>
+
+<script async="async" src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script><meta name="generator" content="Hexo 7.3.0"></head><body><div class="loading-wrapper" data-loading="data-loading"><div class="loading"><span></span><span></span><span></span></div></div><div class="page" data-filter="data-filter"><div class="head" data-show="data-show"><header class="head-header"><div class="head-author"><a class="head-author-link" href="/cp/">競程學習區</a></div><div class="head-right"><button class="bar-wrap" id="bar-wrap-toggle" title="menu button"><span class="bar"></span><span class="bar"></span><span class="bar"></span></button><div class="head-item"><a class="search-button head-item-link"><span>Search</span>
+<i class="icon icon-search"></i></a></div><div class="head-item"></div></div></header>
+<div class="menubar-head" id="menubar"><ul class="menubar-ul"><li class="menubar-item"><i class="icon icon-chevron-right"></i>
+<a class="menubar-link" href="/cp/categories/Posts/">Posts</a></li><li class="menubar-item" data-border="data-border"></li><li class="menubar-item"><i class="icon icon-archive"></i>
+<a class="menubar-link" href="/cp/archives">Archives</a></li></ul><div class="menu-search-box search-button"><div>Search</div>
+<i class="icon icon-search"></i></div></div></div><div class="main" data-page="post"><article class="post" id="post"><header class="post-head"><h1 class="post-title"><a class="title" href="/cp/2025/02/08/time-complexity/">時間複雜度</a></h1></header><div class="post-meta"><div class="post-date"><time class="post-time" itemprop="datePublished" title="2025-02-08 18:34:28" datetime="2025-02-08T10:34:28.000Z">2025-02-08</time></div>|
+<div class="post-tag"></div>
+<div class="post-visit"><span id="busuanzi_container_page_pv"><span id="busuanzi_value_page_pv"></span>访问</span></div></div><div class="post-info"><div class="post-word-count">本文共1,358字。</div>
+<div class="post-cc">版权声明：署名-非商业性使用-相同方式共享
+
+|
+<a target="_blank" rel="noopener" href="https://creativecommons.org/licenses/by-nc-sa/2.5/cn/">CC BY-NC-SA 2.5 CN</a></div></div><div class="article-entry" itemprop="articleBody"><p>在寫程式的時候，有時會碰到<code>TLE</code>的情況發生，明明做法是對的，卻永遠拿不到<code>AC</code> ，因為我們沒有考慮到整筆程式的效率，也就是複雜度方面的考量。</p>
+<h3 id="複雜度是什麼"><a href="#複雜度是什麼" class="headerlink" title="複雜度是什麼"></a>複雜度是什麼</h3><p>複雜度分為時間（Time）與空間（Space）兩種，是用來評估一筆程式執行量能與輸入量關係的一種函式，通常較低複雜度的算法在輸入量變化時，需要的時間或空間成長速度較慢，也就是輸入資料很多時可以用較少時間或較少記憶體來完成，因此複雜度愈低的演算法會被視為較佳的算法，而時間與空間相比之下，時間複雜度的重要性又遠遠大於空間複雜度，在競技程式的題目中所要求的限制或一些優化技巧大多也是針對時間複雜度，因此後面所述的複雜度及例子也以時間複雜度為主。</p>
+<h3 id="複雜度定義及符號"><a href="#複雜度定義及符號" class="headerlink" title="複雜度定義及符號"></a>複雜度定義及符號</h3><p>一筆程式的複雜度可以用函式$f(x)$表示。當一個函式$g(x)$滿足$f(x)&#x3D;O(g(x)); as ; x\to \infty$時，代表存在正常數$c$和$x_0$，使得$0\le |f(x)|\le c, |g(x)|;\forall; x&gt;x_0$。簡單來說，就是在輸入量很大時，$g(x)$的執行效率不會比$f(x)$差。這個定義也被稱為漸進上界（Asymptotic Upper Bound）。</p>
+<p>在分析上會遵守以下幾個原則：</p>
+<ol>
+<li>用最小的上界，也就是符合條件且成長速度盡可能地慢的函數</li>
+<li>忽略所有常數</li>
+<li>只看成長速度最快的項<br>舉例來說，有一函數$f(x)&#x3D;3x^2+6x+5$，其$g(x)$會被視為$x^2$，不是$x^3$、$3x^2$、$x^2+x$。此外在評估上有些函數實際執行速度和輸入資料本身的值也有關係，在計算複雜度時需要考慮三種情況：</li>
+</ol>
+<ul>
+<li>最佳情況 (Best Case)</li>
+<li>平均情況 (Average Case)</li>
+<li>最糟情況 (Worst Case)</li>
+</ul>
+<p>通常我們會以最糟情況來進行分析。比如在一個長度為 $n$ 的序列中進行插入排序法，最好的情況是陣列原本就排好的情況，只需要$O(n)$就可以解決，但最糟的情況會跑到$O(n^2)$，這時我們需要以後者來估計(除非最壞情況的case非常少、幾乎不可能出現，例如Quick Sort的Worst Case會跑到$O(n^2)$，但我們通常以$O(n\log n)$ 來算)。</p>
+<h3 id="常見複雜度類型"><a href="#常見複雜度類型" class="headerlink" title="常見複雜度類型"></a>常見複雜度類型</h3><table>
+<thead>
+<tr>
+<th>O-notation</th>
+<th>名稱</th>
+<th>example</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>$O(1)$</td>
+<td>常數</td>
+<td>基本運算、輸出輸入</td>
+</tr>
+<tr>
+<td>$O(\log n)$</td>
+<td>對數</td>
+<td>二分搜</td>
+</tr>
+<tr>
+<td>$O(n)$</td>
+<td>線性</td>
+<td>遍歷陣列</td>
+</tr>
+<tr>
+<td>$O(n\log n)$</td>
+<td>線性對數</td>
+<td>快速排序(Quick Sort)</td>
+</tr>
+<tr>
+<td>$O(n^2)$</td>
+<td>平方</td>
+<td>氣泡排序、插入排序</td>
+</tr>
+</tbody></table>
+<h3 id="例子"><a href="#例子" class="headerlink" title="例子"></a>例子</h3><p>以下是幾個不同複雜度的程式碼範例：</p>
+<ul>
+<li>$O(1)$</li>
+</ul>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="type">int</span> <span class="title">add</span><span class="params">(<span class="type">int</span> a, <span class="type">int</span> b)</span> </span>&#123;</span><br><span class="line">    <span class="keyword">return</span> a + b;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>以標準輸出輸入以及基本運算來說，不管資料量有多大(扣除溢位情況)，執行次數都一樣，因此皆屬於常數時間。</p>
+<ul>
+<li>$O(n)$</li>
+</ul>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="type">int</span> <span class="title">sum</span><span class="params">(vector&lt;<span class="type">int</span>&gt;&amp; arr)</span> </span>&#123;</span><br><span class="line">    <span class="type">int</span> total = <span class="number">0</span>;</span><br><span class="line">    <span class="keyword">for</span>(<span class="type">int</span> i = <span class="number">0</span>; i &lt; arr.<span class="built_in">size</span>(); i++) &#123;</span><br><span class="line">        total += arr[i];</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">return</span> total;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>在遍歷陣列的時候，一定是整個陣列從頭到尾掃過一次，因此執行次數一定與陣列大小成正比，屬於線性時間。</p>
+<ul>
+<li>$O(\log n)$</li>
+</ul>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="type">int</span> <span class="title">binarySearch</span><span class="params">(vector&lt;<span class="type">int</span>&gt;&amp; arr, <span class="type">int</span> target)</span> </span>&#123;</span><br><span class="line">    <span class="type">int</span> left = <span class="number">0</span>;</span><br><span class="line">    <span class="type">int</span> right = arr.<span class="built_in">size</span>() - <span class="number">1</span>;</span><br><span class="line">    </span><br><span class="line">    <span class="keyword">while</span>(left &lt;= right) &#123;</span><br><span class="line">        <span class="type">int</span> mid = left + (right - left) / <span class="number">2</span>;</span><br><span class="line">        <span class="keyword">if</span>(arr[mid] == target) <span class="keyword">return</span> mid;</span><br><span class="line">        <span class="keyword">if</span>(arr[mid] &lt; target) left = mid + <span class="number">1</span>;</span><br><span class="line">        <span class="keyword">else</span> right = mid - <span class="number">1</span>;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">return</span> <span class="number">-1</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>在二分搜的過程中，最佳情況是一次就找到，而最壞情況則是$\lceil \log_2 n\rceil$(其中$\lceil;\rceil$為上高斯符號)，因此忽略常數後以$\log n$來表示。</p>
+<ul>
+<li>$O(n^2)$</li>
+</ul>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="type">void</span> <span class="title">bubbleSort</span><span class="params">(vector&lt;<span class="type">int</span>&gt;&amp; arr)</span> </span>&#123;</span><br><span class="line">    <span class="type">int</span> n = arr.<span class="built_in">size</span>();</span><br><span class="line">    <span class="keyword">for</span>(<span class="type">int</span> i = <span class="number">0</span>; i &lt; n<span class="number">-1</span>; i++) &#123;</span><br><span class="line">        <span class="keyword">for</span>(<span class="type">int</span> j = <span class="number">0</span>; j &lt; n-i<span class="number">-1</span>; j++) &#123;</span><br><span class="line">            <span class="keyword">if</span>(arr[j] &gt; arr[j<span class="number">+1</span>]) &#123;</span><br><span class="line">                <span class="built_in">swap</span>(arr[j], arr[j<span class="number">+1</span>]);</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>遍歷二維陣列的時候，或是氣泡排序、插入排序的worst case，皆為在一個長$n$的陣列中跑$n$次，因此很直觀的是平方時間。</p>
+<ul>
+<li>$O(n \log n)$</li>
+</ul>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="type">void</span> <span class="title">mergeSort</span><span class="params">(vector&lt;<span class="type">int</span>&gt;&amp; arr, <span class="type">int</span> left, <span class="type">int</span> right)</span> </span>&#123;</span><br><span class="line">    <span class="keyword">if</span>(left &lt; right) &#123;</span><br><span class="line">        <span class="type">int</span> mid = left + (right - left) / <span class="number">2</span>;</span><br><span class="line">        <span class="built_in">mergeSort</span>(arr, left, mid);</span><br><span class="line">        <span class="built_in">mergeSort</span>(arr, mid + <span class="number">1</span>, right);</span><br><span class="line">        <span class="built_in">merge</span>(arr, left, mid, right);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>在合併排序中，因為使用分治的方法，可將排序壓在線性對數時間(其概念與樹狀結構有關)。</p>
+<p>以上這些例子展示了不同複雜度的實際應用。要注意包含更多的迴圈或遞迴結構的程式碼，時間複雜度通常會愈高。</p>
+<h3 id="時間複雜度與時間的換算"><a href="#時間複雜度與時間的換算" class="headerlink" title="時間複雜度與時間的換算"></a>時間複雜度與時間的換算</h3><p>以C++為例，1秒內大約可執行$10^8$次基本運算。因此，當使用線性時間複雜度$O(n)$的演算法時，處理$10^7$筆資料是安全的。而對於平方時間複雜度$O(n^2)$的演算法，由於運算次數會是輸入資料量的平方，因此最多只能處理約$3000$~$4000$筆資料（因為$4000^2 ≈ 1.6×10^7$）。所以當題目的輸入範圍較大時，我們需要尋找更有效率的演算法來降低時間複雜度。</p>
+</div></article><aside class="post-widget"><h4>In this article</h4><nav class="post-toc-wrap" id="post-toc"><ol class="post-toc"><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#%E8%A4%87%E9%9B%9C%E5%BA%A6%E6%98%AF%E4%BB%80%E9%BA%BC"><span class="post-toc-number">1.</span> <span class="post-toc-text">複雜度是什麼</span></a></li><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#%E8%A4%87%E9%9B%9C%E5%BA%A6%E5%AE%9A%E7%BE%A9%E5%8F%8A%E7%AC%A6%E8%99%9F"><span class="post-toc-number">2.</span> <span class="post-toc-text">複雜度定義及符號</span></a></li><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#%E5%B8%B8%E8%A6%8B%E8%A4%87%E9%9B%9C%E5%BA%A6%E9%A1%9E%E5%9E%8B"><span class="post-toc-number">3.</span> <span class="post-toc-text">常見複雜度類型</span></a></li><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#%E4%BE%8B%E5%AD%90"><span class="post-toc-number">4.</span> <span class="post-toc-text">例子</span></a></li><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#%E6%99%82%E9%96%93%E8%A4%87%E9%9B%9C%E5%BA%A6%E8%88%87%E6%99%82%E9%96%93%E7%9A%84%E6%8F%9B%E7%AE%97"><span class="post-toc-number">5.</span> <span class="post-toc-text">時間複雜度與時間的換算</span></a></li></ol></nav></aside></div><footer class="footer-nav"><div class="footer"><div class="back-top" id="back-top" title="Back to top"><i class="icon icon-chevron-bar-up"></i></div><div class="footer-content"><div class="icp"><img src="/cp/img/icp.png" alt="icp Record"/><a class="icp-text" target="_blank" href="https://beian.miit.gov.cn/">footer</a></div><div><span id="busuanzi_container_site_pv"><span id="busuanzi_value_site_pv">?</span>
+PV
+</span><span id="busuanzi_container_site_uv"><span id="busuanzi_value_site_uv">?</span>
+UV</span></div>
+
+Copyright &copy;
+2020<span class="time-divide">-</span>2025
+Fijjj.
+
+Power by
+<a href="https://hexo.io/" target="_blank" rel="external nofollow">Hexo</a>
+and
+<a href="https://github.com/Cerallin/hexo-theme-yuzu" target="_blank" rel="external nofollow" title="v3.2.5">Theme Yuzu</a>.</div></div></footer>
+<script>window.config = {
+  url_root: '/cp/',
+  meta_path: 'meta.json',
+};
+</script>
+<script src="/cp/js/theme/back-to-top.js"></script>
+
+
+<script src="/cp/js/theme/clipboard.js"></script>
+
+
+<script src="/cp/js/theme/loading.js"></script>
+
+
+<script src="/cp/js/theme/navbar.js"></script>
+
+<script src="/cp/js/theme/search.js"></script>
+
+<script src="/cp/js/theme/toc.js"></script>
+<script>window.onload = function () {
+  for (const moduleName in Theme) {
+    const module = Theme[moduleName];
+    module.register();
+  }
+};</script></div><div class="search-modal" id="search-modal"><div class="card"><div class="card-head"><div class="search-box"><input class="search-input" id="search-input" placeholder="搜索"/><div class="search-button" id="search-button"><div class="icon icon-search"></div></div></div><div class="close-button"><div class="icon icon-x"></div></div></div><div class="card-body"><div class="search-count">共<span id="search-count-num">0</span>条搜索结果。</div><div class="search-result" id="search-result"></div></div></div></div></body></html>
